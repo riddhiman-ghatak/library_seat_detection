@@ -121,7 +121,7 @@ if __name__ == "__main__":
                 json_person = df_person.to_json(orient="records")
                 json_chair = df_chair.to_json(orient="records")
                 results.render()  # updates results.imgs with boxes and labels
-                output_image = results.imgs[0]  # output image after rendering
+                output_image = results.ims[0]  # output image after rendering
                 output_image = cv2.cvtColor(output_image, cv2.COLOR_RGB2BGR)
 
                 # Draw Centroids on the deteted objects and returns updated image
