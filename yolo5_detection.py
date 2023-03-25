@@ -16,8 +16,7 @@ warnings.filterwarnings("ignore")
 
 
 # Loading Model
-model = torch.hub.load(
-    "yolov5", 'custom', path="yolov5/runs/train/exp/weights/yolo_weights.pt", source='local')  # local repo
+model = torch.hub.load('ultralytics/yolov5', 'yolov5s')
 # model = torch.hub.load("yolov5", 'custom', path="yolov5/runs/train/exp/weights/yolo_weights.pt", source='local', force_reload=True)  # local repo
 
 
@@ -28,7 +27,7 @@ model.iou = 0.45  # NMS IoU threshold
 model.agnostic = False  # NMS class-agnostic
 model.multi_label = False  # NMS multiple labels per box
 # (optional list) filter by class, i.e. = [0, 15, 16] for COCO persons, cats and dogs
-model.classes = None
+model.classes = [0, 56]
 model.max_det = 20  # maximum number of detections per image
 model.amp = False  # Automatic Mixed Precision (AMP) inference
 
@@ -54,10 +53,11 @@ def draw_centroids_on_image(output_image, json_person, json_chair):
             cy_person = int((ymin_person+ymax_person)/2.0)
             chair_list = [cx_chair, cy_chair]
             person_list = [cx_person, cy_person]
+            c1 = (xmin_chair, ymin_chair)
+            c2 = (xmax_chair, ymax_chair)
             centroid_dist = math.dist(chair_list, person_list)
-            if (centroid_dist <= 0.06):
-                cv2.rectangle(output_image, (xmin_chair, ymin_chair),
-                              (xmax_chair, ymax_chair), (0, 0, 255), 2)
+            if (centroid_dist >= 0.1):
+                cv2.rectangle(output_image, (int(c1[0]), int(c1[1])), (int(c2[0]), int(c2[1])), (0, 150, 0), 2)
                 break
         #print("Object: ", data.index(objects))
         #print ("xmin", xmin)
@@ -82,7 +82,7 @@ if __name__ == "__main__":
     while (1):
         try:
             # Start reading camera feed (https://answers.opencv.org/question/227535/solvedassertion-error-in-video-capturing/))
-            cap = cv2.VideoCapture(0, cv2.CAP_DSHOW)
+            cap =  cv2.VideoCapture('library_video.mp4')
             cap.set(cv2.CAP_PROP_FRAME_WIDTH, 1280)
             cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 720)
 
@@ -138,3 +138,4 @@ if __name__ == "__main__":
             sys.exit()
 
     cv2.destroyAllWindows()
+
