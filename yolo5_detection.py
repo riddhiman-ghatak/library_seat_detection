@@ -56,7 +56,8 @@ def draw_centroids_on_image(output_image, json_person, json_chair):
             c1 = (xmin_chair, ymin_chair)
             c2 = (xmax_chair, ymax_chair)
             centroid_dist = math.dist(chair_list, person_list)
-            if (centroid_dist >= 0.1):
+            print(centroid_dist)
+            if (centroid_dist >= 190):
                 cv2.rectangle(output_image, (int(c1[0]), int(c1[1])), (int(c2[0]), int(c2[1])), (0, 150, 0), 2)
                 break
         #print("Object: ", data.index(objects))
