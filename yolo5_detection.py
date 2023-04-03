@@ -33,7 +33,7 @@ model.amp = False  # Automatic Mixed Precision (AMP) inference
 
 
 # Function to draw Centroids on the deteted objects and returns updated image
-def draw_centroids_on_image(output_image, json_person, json_chair):
+def draw_centroids_on_image(image, json_person, json_chair):
     data_person = json.loads(json_person)
     data_chair = json.loads(json_chair)  # Converting JSON array to Python List
     # Accessing each individual object and then getting its xmin, ymin, xmax and ymax to calculate its centroid
@@ -57,8 +57,13 @@ def draw_centroids_on_image(output_image, json_person, json_chair):
             c2 = (xmax_chair, ymax_chair)
             centroid_dist = math.dist(chair_list, person_list)
             print(centroid_dist)
+            
+            print(c1 , c2)
+            print("......")
+            
             if (centroid_dist >= 190):
-                cv2.rectangle(output_image, (int(c1[0]), int(c1[1])), (int(c2[0]), int(c2[1])), (0, 150, 0), 2)
+                cv2.rectangle(image, (int(c1[0]), int(c1[1])), (int(c2[0]), int(c2[1])), (0, 150, 0), 2)
+                cv2.putText(image, 'Empty', (int(c1[0]), int(c1[1]-10)), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 150, 0), 2)
                 break
         #print("Object: ", data.index(objects))
         #print ("xmin", xmin)
@@ -76,7 +81,7 @@ def draw_centroids_on_image(output_image, json_person, json_chair):
         # cv2.putText(output_image, str(str(cx)+" , "+str(cy)), (int(cx)-40, int(cy)+30),
         #             cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255), 1, cv2.LINE_AA)
 
-    return (output_image)
+    return (image)
 
 
 if __name__ == "__main__":
@@ -121,16 +126,16 @@ if __name__ == "__main__":
                 # print(json_results)
                 json_person = df_person.to_json(orient="records")
                 json_chair = df_chair.to_json(orient="records")
-                results.render()  # updates results.imgs with boxes and labels
-                output_image = results.ims[0]  # output image after rendering
-                output_image = cv2.cvtColor(output_image, cv2.COLOR_RGB2BGR)
+                # results.render()  # updates results.imgs with boxes and labels
+                # output_image = results.ims[0]  # output image after rendering
+                output_image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
 
                 # Draw Centroids on the deteted objects and returns updated image
-                output_image = draw_centroids_on_image(
+                output_im = draw_centroids_on_image(
                     output_image, json_person, json_chair)
 
                 # Show the output image after rendering
-                cv2.imshow("Output", output_image)
+                cv2.imshow("Output", output_im)
                 # cv2.waitKey(1)
 
         except Exception as e:
