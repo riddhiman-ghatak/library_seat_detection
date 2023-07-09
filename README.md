@@ -1,14 +1,44 @@
-# Yolo5 Object Detection and Centroid Finding
+# Library Seat Detection
 
-**My Environment**
+This project is a system which can detect unoccupied seats in library from live CCTV footage.Used YOLOv5 object detection model and Opencv to make bounding boxes around the unocuupied seats.
+
+## Dependencies
 Python: 3.8.12
 PyTorch: 1.10.2
 OpenCV-Python:  4.5.5.62
+YOLOv5
+
+## Results
 
 
-In this code I am using [YOLOv5 Algorithm](https://github.com/ultralytics/yolov5) to detect some objects and then finding their **centroids**. The centroids are in pixel coordinates.
-This code takes **live camera feed** from a USB webcam and then detect the objects and centroids in **real-time**.
-I have trainer the YOLO model using my custom dataset.
-To train your custom dataset please follow this guide: [Train Custom Data](https://github.com/ultralytics/yolov5/wiki/Train-Custom-Data)
+## Documentation
 
-**The output of this code is:** ![Result](https://user-images.githubusercontent.com/25352528/153817902-9ae71b55-4bee-4e83-9fe3-d5221052e91f.jpg)
+clone this project to your local machine using the following command
+
+```shell
+git clone https://github.com/riddhiman-ghatak/library_seat_detection.git
+```
+then move to project root directory
+
+```shell
+cd library_seat_detection
+```
+
+Then run the following command to see result
+
+```shell
+python yolo5_detection.py
+```
+
+## Algorithm
+
+Using YOLOv5 object detection model firstly It detects the **person** and **chair** class from the CCTV footage. 
+Then it stores the centroids of person and chair in separate variables.
+After that it calculates the distances in between all persons and chairs, if it is more than a thresold limit, then it marks that chair as empty.
+Then using Opencv it creates a bounding box around that chair. 
+
+
+
+
+
+
