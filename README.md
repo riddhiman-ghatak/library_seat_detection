@@ -2,13 +2,15 @@
 
 This project is a system which can detect unoccupied seats in library from live CCTV footage.Used YOLOv5 object detection model and Opencv to make bounding boxes around the unocuupied seats.
 
+## Results
+
 ## Dependencies
 Python: 3.8.12
 PyTorch: 1.10.2
 OpenCV-Python:  4.5.5.62
 YOLOv5
 
-## Results
+
 
 
 ## Documentation
